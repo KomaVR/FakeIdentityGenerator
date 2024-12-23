@@ -199,8 +199,8 @@
       for (let i = 0; i < quantity; i++) {
         const firstName = getRandomItem(firstNames);
         const lastName = getRandomItem(lastNames);
-        const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${getRandomItem(domains)}`;
-        identities += `${firstName} ${lastName}, ${email}\n`;
+        const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${getRandomItem(domains)}\n`;
+        identities += `${firstName} ${lastName}, ${email} \n`;
       }
 
       output.value = identities;
