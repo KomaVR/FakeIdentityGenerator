@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fake Identity Generator</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f3f4f8;
+      color: #333;
+    }
+    .container {
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 30px;
+      background-color: #ffffff;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+      font-size: 2em;
+      color: #4A90E2;
+    }
+    .toggle-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+    label {
+      font-size: 1.1em;
+      color: #555;
+      margin-right: 10px;
+    }
+    select {
+      font-size: 1.1em;
+      padding: 8px 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+      outline: none;
+      cursor: pointer;
+    }
+    button {
+      width: 100%;
+      padding: 15px;
+      font-size: 1.2em;
+      background-color: #4A90E2;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 20px;
+    }
+    button:hover {
+      background-color: #357ab7;
+    }
+    textarea {
+      width: 100%;
+      height: 400px;
+      font-family: 'Courier New', monospace;
+      font-size: 1em;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+      background-color: #f4f4f9;
+      resize: none;
+      margin-top: 20px;
+      outline: none;
+    }
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      font-size: 0.9em;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Fake Identity Generator</h1>
+
+    <div class="toggle-container">
+      <label for="genderToggle">Select Gender:</label>
+      <select id="genderToggle">
+        <option value="male">Male</option>
+        <option value="female">Female</option>
+      </select>
+    </div>
+
+    <button onclick="generateIdentities()">Generate 1000 Identities</button>
+
+    <textarea id="output" readonly></textarea>
+  </div>
+
+  <div class="footer">
+    <p>Created by FakeIdentityGenerator | 2024</p>
+  </div>
+
+  <script>
+    const maleFirstNames = [
+      "Aaron", "Adam", "Adrian", "Aiden", "Alexander", "Andrew", "Anthony", "Austin", "Benjamin", "Blake",
+      "Brandon", "Brian", "Charles", "Christian", "Christopher", "Daniel", "David", "Dylan", "Edward", "Ethan",
+      "Evan", "Gabriel", "Gavin", "George", "Henry", "Ian", "Jack", "Jacob", "James", "Jason", "Jeremy", "John",
+      "Joseph", "Joshua", "Justin", "Kevin", "Kyle", "Liam", "Luke", "Mark", "Matthew", "Michael", "Nathan",
+      "Nicholas", "Oliver", "Owen", "Patrick", "Paul", "Peter", "Philip", "Raymond", "Richard", "Robert", "Ryan",
+      "Samuel", "Scott", "Sean", "Stephen", "Thomas", "Timothy", "Tyler", "Victor", "William", "Zachary",
+      "Isaac", "Julian", "Leo", "Mason", "Caleb", "Cameron", "Zane", "Jaxon", "Miles", "Nolan", "Avery", "Elliot",
+      "Grayson", "Colton", "Hudson", "Austin", "Elijah", "Weston", "Phoenix", "Silas", "Xander", "Finn",
+      "Maxwell", "Sebastian", "Caden", "Kaden", "Reed", "Riley", "Eli", "Jackson", "Seth", "Evan", "Eli", "Noah",
+      "Harrison", "Maximus", "Brody", "Jesse", "Maverick", "Dominic", "Wyatt", "Cole", "Lucas", "Jared", "Nash",
+      "Tanner", "Gage", "Roman", "Malachi", "Brayden", "Zander", "Rhett", "Isaiah", "Bryce", "Trevor", "Gage",
+      "Adriel", "Alfred", "Amos", "Archer", "Asher", "Bennett", "Blaze", "Bo", "Braylon", "Brock", "Brooks",
+      "Bryan", "Byron", "Caden", "Cael", "Calvin", "Camden", "Cannon", "Carl", "Carlos", "Chase", "Chester", "Chris",
+      "Clayton", "Cory", "Dallas", "Dane", "Darren", "David", "Declan", "Dennis", "Derrick", "Dexter", "Diego",
+      "Dylan", "Easton", "Elliott", "Enzo", "Ezra", "Fletcher", "Flynn", "Francis", "Freddie", "Gage", "Gavin",
+      "Gene", "Grant", "Gunnar", "Hendrix", "Hugo", "Jace", "Jasper", "Jayce", "Jeremiah", "Joaquin", "Joel",
+      "Jonah", "Jonas", "Jordan", "Jude", "Kaden", "Kaleb", "Kane", "Kenny", "Kieran", "Kingsley", "Kobe",
+      "Kollin", "Landon", "Lennox", "Leo", "Liam", "Logan", "Louis", "Lucas", "Lyle", "Mack", "Maddox", "Malcolm",
+      "Marco", "Maverick", "Max", "Milo", "Mitch", "Moses", "Nash", "Nehemiah", "Nico", "Nolan", "Owen", "Paxton",
+      "Phineas", "Quinn", "Reed", "Reuben", "Riley", "Roman", "Rory", "Royce", "Ryder", "Saul", "Shane", "Silas",
+      "Simon", "Solomon", "Spencer", "Sterling", "Theo", "Tobin", "Troy", "Tyson", "Vance", "Victor", "Wade",
+      "Walker", "Warren", "Zane"
+    ];
+
+    const femaleFirstNames = [
+      "Abigail", "Amanda", "Amy", "Angela", "Anna", "Ashley", "Aubrey", "Audrey", "Barbara", "Bethany", "Brittany",
+      "Caitlyn", "Caroline", "Catherine", "Charlotte", "Chloe", "Christine", "Claire", "Danielle", "Donna", "Doris",
+      "Elizabeth", "Emily", "Emma", "Eve", "Hannah", "Heather", "Helen", "Isabella", "Jacqueline", "Jasmine", "Jessica",
+      "Jordan", "Julia", "Kaitlyn", "Karen", "Katherine", "Kimberly", "Lily", "Linda", "Megan", "Melissa", "Michele",
+      "Natalie", "Olivia", "Paige", "Rebecca", "Renee", "Samantha", "Sandra", "Sarah", "Sophia", "Stella", "Tiffany",
+      "Victoria", "Violet", "Whitney", "Zoe", "Addison", "Ariana", "Bella", "Brooklyn", "Camila", "Carla", "Diana",
+      "Gabriella", "Hailey", "Holly", "Jada", "Jasmine", "Julia", "Kylie", "Leah", "Lillian", "Lindsay", "Maya",
+      "Megan", "Naomi", "Nicole", "Olivia", "Sophia", "Sienna", "Taylor", "Trinity", "Valerie", "Zara", "Zelda",
+      "Lola", "Lindsey", "Madeline", "Maya", "Sienna", "Adeline", "Ava", "Cora", "Emma", "Isabelle", "Lydia", "Mia",
+      "Piper", "Rachel", "Sadie", "Sarah", "Shelby", "Vivian", "Angela", "Annabelle", "Ava", "Charlie", "Clara", "Diana",
+      "Georgia", "Giselle", "Gracie", "Haley", "Hannah", "Ivy", "Jocelyn", "Jordan", "Jordan", "Juliana", "Kayla", "Lana",
+      "Mia", "Molly", "Olivia", "Riley", "Ruby", "Sadie", "Sophie", "Taylor", "Tessa", "Vera", "Willa", "Zara", "Zoey",
+      "Ada", "Alana", "Bella", "Cassidy", "Catherine", "Charlie", "Chelsea", "Dahlia", "Deborah", "Delilah", "Emma",
+      "Eva", "Finley", "Flora", "Harper", "India", "Iris", "Jade", "Jasmine", "Jordyn", "Kaitlyn", "Kate", "Kendra",
+      "Kinley", "Lena", "Lilith", "Madeline", "Marina", "Marissa", "Maya", "Megan", "Melody", "Mila", "Olivia", "Sadie",
+      "Serena", "Sierra", "Sophie", "Summer", "Tara", "Vivian", "Willow"
+    ];
+
+    const lastNames = [
+      "Anderson", "Brown", "Clark", "Davis", "Garcia", "Harris", "Jackson", "Johnson", "Jones", "Lee",
+      "Lewis", "Martin", "Moore", "Nelson", "Perez", "Roberts", "Scott", "Smith", "Taylor", "Thomas",
+      "Walker", "White", "Wilson", "Wong", "Young", "Allen", "Baker", "Collins", "Cook", "Cox", "Davis", "Evans",
+      "Gonzalez", "Gray", "Green", "Hall", "Hernandez", "Hill", "King", "Klein", "Miller", "Mitchell", "Morgan",
+      "Murphy", "Nguyen", "Parker", "Patel", "Perez", "Perry", "Phillips", "Rivera", "Robinson", "Sanchez",
+      "Shaw", "Singh", "Taylor", "Thomas", "Thompson", "Tucker", "Watson", "White", "Williams", "Wilson"
+    ];
+
+    const domains = [
+      "gmail.com", "yahoo.com", "outlook.com", "hotmail.com", "icloud.com", "aol.com", "live.com", "mail.com"
+    ];
+
+    function generateIdentities() {
+      const gender = document.getElementById("genderToggle").value;
+      const firstNameList = gender === "male" ? maleFirstNames : femaleFirstNames;
+      let identities = "";
+      for (let i = 0; i < 1000; i++) {
+        const firstName = firstNameList[Math.floor(Math.random() * firstNameList.length)];
+        const lastName = lastNames[Math.floor(Math.random() * lastNames.length)];
+        const domain = domains[Math.floor(Math.random() * domains.length)];
+        const email = `${firstName.toLowerCase()}.${lastName.toLowerCase()}@${domain}`;
+        identities += `Name: ${firstName} ${lastName}\nEmail: ${email}\n\n`;
+      }
+      document.getElementById("output").value = identities;
+    }
+  </script>
+</body>
+</html>
